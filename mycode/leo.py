@@ -38,19 +38,19 @@ def l():
     dash()
     dot()
     dot()
-    print("L", end="")
+    print("L", end="", flush=True)
     sleep(0.8)
 
 def e():
     dot()
-    print("E", end="")
+    print("E", end="", flush=True)
     sleep(0.8)
 
 def o():
     dash()
     dash()
     dash()
-    print("O", end="")
+    print("O", end="", flush=True)
     sleep(0.5)
 
 def newword():

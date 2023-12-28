@@ -21,10 +21,28 @@ led = LED("WPI0")       # WiringPi
 led = LED("J8:11")      # BOARD
 '''
 
+def dot():
+    led.on()
+    sleep(0.2)
+    led.off()
+    sleep(0.2)
+
+def dash():
+    led.on()
+    sleep(0.5)
+    led.off()
+    sleep(0.5)
+
 while True:
-    led.on()    # turn on LED
-    print ('led turned on >>>')  # print message on terminal
-    sleep(0.2)    # wait 1 second
-    led.off()   # turn off LED 
-    print ('led turned off <<<')
-    sleep(0.2)    # wait 1 second
+    dot()
+    dot()
+    dot()
+    sleep(0.8)
+    dash()
+    dash()
+    dash()
+    sleep(0.5)
+    dot()
+    dot()
+    dot()
+    sleep(3.8)

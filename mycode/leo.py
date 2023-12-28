@@ -35,14 +35,13 @@ def dash():
 
 while True:
     dot()
+    dash()
     dot()
     dot()
-    sleep(0.8)
+    sleep(1)
+    dot()
+    sleep(1)
     dash()
     dash()
     dash()
-    sleep(0.5)
-    dot()
-    dot()
-    dot()
     sleep(3.8)

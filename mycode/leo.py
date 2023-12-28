@@ -33,15 +33,32 @@ def dash():
     led.off()
     sleep(0.5)
 
+def l():
+    dot()
+    dash()
+    dot()
+    dot()
+    print("L", end="")
+    sleep(0.8)
+
+def e():
+    dot()
+    print("E", end="")
+    sleep(0.8)
+
+def o():
+    dash()
+    dash()
+    dash()
+    print("O", end="")
+    sleep(0.5)
+
+def newword():
+    print("")
+    sleep(3)
+
 while True:
-    dot()
-    dash()
-    dot()
-    dot()
-    sleep(1)
-    dot()
-    sleep(1)
-    dash()
-    dash()
-    dash()
-    sleep(3.8)
+    l()
+    e()
+    o()
+    newword()

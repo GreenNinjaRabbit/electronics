@@ -1,4 +1,6 @@
+from time import sleep
 from keypad import Keypad
+from gpiozero.pins.mock import MockConnectedPin, MockPin
 
 inputpins = [12,16,18,22]
 outputpins = [11,13,15,19]
@@ -26,3 +28,47 @@ def test_otherkeys():
     assert pad.inputpins == inputpins
     assert pad.outputpins == outputpins
     assert pad.keys == keys
+
+def test_5pressed(mock_factory):
+    class MockPressedButton(MockPin):
+        """
+        This derivative of :class:`MockPin` emulates a pin connected to another
+        mock pin e.g. by pressing a button.
+        """
+        def __init__(self, factory, info, connected_pin):
+            super().__init__(factory, info)
+            self.connected_pin = connected_pin
+        
+        def _change_state(self, value):
+            self.connected_pin.state = value
+            return super()._change_state(value)
+
+
+    pin13 = mock_factory.pin(13)
+    pin16 = mock_factory.pin(16, pin_class=MockPressedButton, connected_pin=pin13)
+    pin13.function = "output"
+    pin16.function = "input"
+    assert pin16.state is False
+    assert pin13.state is False
+    pin16.drive_high()
+    sleep(1)
+    assert pin16.state is True
+    assert pin13.state is True
+    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
+    # assert pad.value == "5"
+
+def test_mock_pin_connected_state(mock_factory):
+    input_pin = mock_factory.pin(4)
+    pin2 = mock_factory.pin(5, pin_class=MockConnectedPin, input_pin=input_pin)
+    pin3 = mock_factory.pin(6, pin_class=MockConnectedPin)
+    input_pin.function = 'input'
+    pin2.function = 'output'
+    pin3.function = 'output'
+    pin2.state = 0
+    assert input_pin.state == 0
+    pin2.state = 1
+    assert input_pin.state == 1
+    pin3.state = 0
+    assert input_pin.state == 1
+    pin3.state = 1
+    assert input_pin.state == 1

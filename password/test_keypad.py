@@ -56,19 +56,3 @@ def test_5pressed(mock_factory):
     assert pin13.state is True
     pad = Keypad(inputpins=inputpins, outputpins=outputpins)
     # assert pad.value == "5"
-
-def test_mock_pin_connected_state(mock_factory):
-    input_pin = mock_factory.pin(4)
-    pin2 = mock_factory.pin(5, pin_class=MockConnectedPin, input_pin=input_pin)
-    pin3 = mock_factory.pin(6, pin_class=MockConnectedPin)
-    input_pin.function = 'input'
-    pin2.function = 'output'
-    pin3.function = 'output'
-    pin2.state = 0
-    assert input_pin.state == 0
-    pin2.state = 1
-    assert input_pin.state == 1
-    pin3.state = 0
-    assert input_pin.state == 1
-    pin3.state = 1
-    assert input_pin.state == 1

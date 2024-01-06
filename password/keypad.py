@@ -9,3 +9,4 @@ class Keypad:
         self.inputpins = inputpins
         self.outputpins = outputpins
         self.keys = keys
+        self.value = "5"

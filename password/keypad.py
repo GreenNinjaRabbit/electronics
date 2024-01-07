@@ -14,11 +14,20 @@ class Keypad(Device):
         super().__init__(**kwargs)
         self.inputpins = [Device.pin_factory.pin(pinnumber) for pinnumber in inputpins]
         self.outputpins = [Device.pin_factory.pin(pinnumber) for pinnumber in outputpins]
+        for pin in self.inputpins+self.outputpins:
+            pin.function = "input"
+        self.setpinstate("up")
+
+    def setpinstate(self, state):
+        for inputpin in self.inputpins:
+            inputpin.pull=state
         
     @property
     def value(self):
+        self.setpinstate("down")
         for row, inputpin in enumerate(self.inputpins):
-            if inputpin.state:
-                for col, outputpin in enumerate(self.outputpins):
-                    if outputpin.state:
-                        return self.keys[row][col]
+            inputpin.pull = "up"
+            for col, outputpin in enumerate(self.outputpins):
+                if outputpin.state:
+                    self.setpinstate("up")
+                    return self.keys[row][col]

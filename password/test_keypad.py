@@ -1,6 +1,7 @@
 from time import sleep
 from keypad import Keypad
 from gpiozero.pins.mock import MockConnectedPin, MockPin
+from gpiozero import PinSetInput
 
 inputpins = [12,16,18,22]
 outputpins = [11,13,15,19]
@@ -15,7 +16,11 @@ class MockPressedButton(MockPin):
         self.connected_pin = connected_pin
     
     def _change_state(self, value):
-        self.connected_pin.state = value
+        pullvalues = {0: "down", 1: "up"}
+        try:
+            self.connected_pin.state = value
+        except PinSetInput:
+            self.connected_pin.pull = pullvalues[value]
         return super()._change_state(value)
 
 def test_Keypad():
@@ -45,6 +50,18 @@ def test_otherkeys():
 def test_5pressed(mock_factory):
     pin13 = mock_factory.pin(13)
     pin16 = mock_factory.pin(16, pin_class=MockPressedButton, connected_pin=pin13)
+    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
+    assert pad.value == "5"
+
+def test_9pressed(mock_factory):
+    pin15 = mock_factory.pin(15)
+    pin18 = mock_factory.pin(18, pin_class=MockPressedButton, connected_pin=pin15)
+    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
+    assert pad.value == "9"
+
+def test_MockPressedButton(mock_factory):
+    pin13 = mock_factory.pin(13)
+    pin16 = mock_factory.pin(16, pin_class=MockPressedButton, connected_pin=pin13)
     pin13.function = "output"
     pin16.function = "input"
     assert pin16.state is False
@@ -53,19 +70,3 @@ def test_5pressed(mock_factory):
     sleep(1)
     assert pin16.state is True
     assert pin13.state is True
-    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
-    assert pad.value == "5"
-
-def test_9pressed(mock_factory):
-    pin18 = mock_factory.pin(18)
-    pin15 = mock_factory.pin(15, pin_class=MockPressedButton, connected_pin=pin18)
-    pin18.function = "output"
-    pin15.function = "input"
-    assert pin15.state is False
-    assert pin18.state is False
-    pin15.drive_high()
-    sleep(1)
-    assert pin15.state is True
-    assert pin18.state is True
-    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
-    assert pad.value == "9"

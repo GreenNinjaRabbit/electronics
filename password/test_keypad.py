@@ -18,7 +18,7 @@ class MockPressedButton(MockPin):
         self.connected_pin.state = value
         return super()._change_state(value)
 
-def test_Keypad(mock_factory):
+def test_Keypad():
     keys = [
         ["1","2","3","A"],
         ["4","5","6","B"],
@@ -30,7 +30,7 @@ def test_Keypad(mock_factory):
     assert pad.outputpinnumbers == outputpins
     assert pad.keys == keys
 
-def test_otherkeys(mock_factory):
+def test_otherkeys():
     keys = [
         ["1","2","3"],
         ["4","5","6"],

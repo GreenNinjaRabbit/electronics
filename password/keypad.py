@@ -1,18 +1,19 @@
 from gpiozero import Device
 
-class Keypad:
+class Keypad(Device):
     KEYS = [
         ["1","2","3","A"],
         ["4","5","6","B"],
         ["7","8","9","C"],
         ["*","0","#","D"]
     ]
-    def __init__(self, inputpins, outputpins, keys=KEYS) -> None:
+    def __init__(self, inputpins, outputpins, keys=KEYS, **kwargs) -> None:
         self.inputpinnumbers = inputpins
-        self.inputpins = [Device.pin_factory.pin(pinnumber) for pinnumber in inputpins]
         self.outputpinnumbers = outputpins
-        self.outputpins = [Device.pin_factory.pin(pinnumber) for pinnumber in outputpins]
         self.keys = keys
+        super().__init__(**kwargs)
+        self.inputpins = [Device.pin_factory.pin(pinnumber) for pinnumber in inputpins]
+        self.outputpins = [Device.pin_factory.pin(pinnumber) for pinnumber in outputpins]
         
     @property
     def value(self):

@@ -1,6 +1,6 @@
 from time import sleep
 from keypad import Keypad
-from gpiozero.pins.mock import MockConnectedPin, MockPin
+from gpiozero.pins.mock import MockPin
 from gpiozero import PinSetInput
 
 inputpins = [12,16,18,22]
@@ -58,6 +58,16 @@ def test_9pressed(mock_factory):
     pin18 = mock_factory.pin(18, pin_class=MockPressedButton, connected_pin=pin15)
     pad = Keypad(inputpins=inputpins, outputpins=outputpins)
     assert pad.value == "9"
+
+def test_isnotactive(mock_factory):
+    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
+    assert not pad.is_active
+    
+def test_isactive(mock_factory):
+    pin13 = mock_factory.pin(13)
+    pin16 = mock_factory.pin(16, pin_class=MockPressedButton, connected_pin=pin13)
+    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
+    assert pad.is_active
 
 def test_MockPressedButton(mock_factory):
     pin13 = mock_factory.pin(13)

@@ -31,3 +31,7 @@ class Keypad(Device):
                 if outputpin.state:
                     self.setpinstate("up")
                     return self.keys[row][col]
+                
+    @property
+    def is_active(self):
+        return any(outputpin.state for outputpin in self.outputpins)

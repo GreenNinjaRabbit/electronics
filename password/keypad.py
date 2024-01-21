@@ -29,8 +29,9 @@ class Keypad(Device):
     
     def setlastpressed(self, *_):
         self.lastpressed = self.value
-        self.whenpressed()
-
+        if self.whenpressed:
+            self.whenpressed()
+            
     @property
     def value(self):
         for outputpin in self.outputpins:

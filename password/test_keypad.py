@@ -80,3 +80,10 @@ def test_MockPressedButton(mock_factory):
     sleep(1)
     assert pin16.state is True
     assert pin13.state is True
+
+def test_pressingbuttongetsvalue(mock_factory):
+    pin15 = mock_factory.pin(15)
+    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
+    assert pad.lastpressed == None
+    pin15.drive_high()
+    assert pad.lastpressed == "3"

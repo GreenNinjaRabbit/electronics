@@ -87,3 +87,17 @@ def test_pressingbuttongetsvalue(mock_factory):
     assert pad.lastpressed == None
     pin15.drive_high()
     assert pad.lastpressed == "3"
+
+def test_whenpressed(mock_factory):
+    code = []
+    def addtocode():
+        code.append(pad.lastpressed)
+
+    pin15 = mock_factory.pin(15)
+    pad = Keypad(inputpins=inputpins, outputpins=outputpins)
+    pad.whenpressed = addtocode
+    assert pad.lastpressed == None
+    
+    pin15.drive_high()
+    assert pad.lastpressed == "3"
+    assert code == ["3"]

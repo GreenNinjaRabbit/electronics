@@ -12,6 +12,7 @@ class Keypad(Device):
         self.outputpinnumbers = outputpins
         self.keys = keys
         self.lastpressed = None
+        self.whenpressed = None
         super().__init__(**kwargs)
         self.inputpins = [Device.pin_factory.pin(pinnumber) for pinnumber in inputpins]
         self.outputpins = [Device.pin_factory.pin(pinnumber) for pinnumber in outputpins]
@@ -28,6 +29,7 @@ class Keypad(Device):
     
     def setlastpressed(self, *_):
         self.lastpressed = self.value
+        self.whenpressed()
 
     @property
     def value(self):
